@@ -37,7 +37,7 @@ jobs: #具体的任务
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
       - name: Upload Release Asset
-        id: upload-release-asset
+        id: upload-release-asset-1
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,7 +47,7 @@ jobs: #具体的任务
           asset_name: test-report.zip # 资源名
           asset_content_type: application/zip
       - name: Upload Release Asset
-        id: upload-release-asset
+        id: upload-release-asset-2
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -57,17 +57,7 @@ jobs: #具体的任务
           asset_name: java-doc.zip # 资源名
           asset_content_type: application/zip
       - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # 上传网址，无需改动
-          asset_path: java-doc.zip # 上传路径
-          asset_name: java-doc.zip # 资源名
-          asset_content_type: application/zip
-      - name: Upload Release Asset
-        id: upload-release-asset
+        id: upload-release-asset-4
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
