@@ -29,6 +29,9 @@ dependencies {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
+test {
+    useJUnitPlatform()
+}
 jar {
     into('META-INF') {
         from files('LICENSE')
@@ -51,9 +54,7 @@ tasks.register('sourcesJar', Jar) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
-test {
-    useJUnitPlatform()
-}
+
 artifacts {
     sourcesJar
 }

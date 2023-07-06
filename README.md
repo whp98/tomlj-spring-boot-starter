@@ -4,6 +4,8 @@ Spring Boot stater for [tomlj](https://github.com/tomlj/tomlj)
 
 本项目是 Spring Boot 项目toml的起步依赖使用[tomlj](https://github.com/tomlj/tomlj)作为toml文件的解析库。
 
+## 当前依赖版本
+v1.1.0 
 
 ## 已知问题
 本项目编写了较多的测试用例发现有一些不支持的tomlj的语法
