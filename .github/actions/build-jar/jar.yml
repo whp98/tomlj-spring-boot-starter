@@ -1,0 +1,78 @@
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: Build Jar
+
+on:  #触发条件
+  push:
+    tags:
+      - v*
+jobs: #具体的任务
+  build:
+
+    runs-on: ubuntu-latest #执行的环境
+
+    steps:
+      - uses: actions/checkout@v2 #拉取项目文件
+      - name: Set up JDK 8 #配置java环境
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - name: Grant execute permission for gradlew  #更改脚本权限
+        run: chmod +x gradlew
+      - name: Build with Gradle  #开始打包 -x test 跳过测试
+        run: ./gradlew test jar javadoc
+      # 文件打包并发布
+      - name: Generate Zip
+        run: |
+          sudo apt-get install zip
+          zip -9 test-report.zip build/reports/tests/test/*
+          zip -9 java-doc.zip build/docs/javadoc/*
+          zip -9 jar-pack.zip build/libs/*
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # 上传网址，无需改动
+          asset_path: test-report.zip # 上传路径
+          asset_name: test-report.zip # 资源名
+          asset_content_type: application/zip
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # 上传网址，无需改动
+          asset_path: java-doc.zip # 上传路径
+          asset_name: java-doc.zip # 资源名
+          asset_content_type: application/zip
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # 上传网址，无需改动
+          asset_path: java-doc.zip # 上传路径
+          asset_name: java-doc.zip # 资源名
+          asset_content_type: application/zip
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # 上传网址，无需改动
+          asset_path: jar-pack.zip # 上传路径
+          asset_name: jar-pack.zip # 资源名
+          asset_content_type: application/zip
