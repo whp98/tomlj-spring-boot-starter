@@ -1,0 +1,132 @@
+# 这是一条 TOML 注释
+
+# 这是一个多行的
+# TOML 注释
+
+# 字符串
+[string]
+# 单行字符串 含转义
+[string.escape_one_row]
+# 普通字符串
+str1 = "I'm a string."
+# 转义引号
+str2 = "You can \"quote\" me."
+# 转义tab和unioncode 和换行
+str3 = "Name\tJos\u00E9\nLoc\tSF."
+# 多行字符串 含转义
+[string.escape_muilt_row]
+# 普通多行字符串 第一个换行被忽略 windows换行 /r/n
+str1 = """
+Roses are red
+Violets are blue"""
+# 多行字符串可以使用行末反斜杠去除空字符
+str2 = """\
+  The quick brown \
+  fox jumps over \
+  the lazy dog.\
+  """
+[string.no_escape_one_row]
+# 字面量 单引号内无转义 内容不能包含单引号
+path = 'C:\Users\nodejs\templates'
+path2 = '\\User\admin$\system32'
+quoted = 'Tom "Dubs" Preston-Werner'
+regex = '<\i\c*\s*>'
+[string.no_escape_muilt_row]
+# 多行字面量 无转义 内容可以包含单引号
+re = '''I [dw]on't need \d{2} apples'''
+lines = '''
+原始字符串中的
+第一个换行被剔除了。
+所有其它空白
+都保留了。
+'''
+[number]
+[number.int]
+# 整数
+int1 = +99
+int2 = 42
+int3 = 0
+int4 = -17
+[number.hex]
+# 十六进制带有前缀 `0x`
+hex1 = 0xDEADBEEF
+hex2 = 0xdeadbeef
+hex3 = 0xdead_beef
+[number.oct]
+# 八进制带有前缀 `0o`
+oct1 = 0o01234567
+oct2 = 0o755
+[number.bin]
+# 二进制带有前缀 `0b`
+bin1 = 0b11010110
+[number.float]
+# 小数
+float1 = +1.0
+float2 = 3.1415
+float3 = -0.01
+# 指数 科学计数法
+float4 = 5e+22
+float5 = 1e06
+float6 = -2E-2
+# both 小数并且科学计数法
+float7 = 6.626e-34
+# 分隔符
+float8 = 224_617.445_991_228
+[number.infinity]
+# 无穷
+infinite1 = inf # 正无穷
+infinite2 = +inf # 正无穷
+infinite3 = -inf # 负无穷
+[number.number_nan]
+# 非数
+not1 = nan
+not2 = +nan
+not3 = -nan
+[date.zone]
+# 坐标日期时刻
+odt1 = 1979-05-27T07:32:00Z
+odt2 = 1979-05-27T00:32:00-07:00
+odt3 = 1979-05-27T00:32:00.999999-07:00
+[date.nozone]
+# 各地日期时刻
+ldt1 = 1979-05-27T07:32:00
+ldt2 = 1979-05-27T00:32:00.999999
+[date.one_day]
+# 各地日期
+ld1 = 1979-05-27
+[date.time]
+# 各地时刻
+lt1 = 07:32:00
+lt2 = 00:32:00.999999
+[array]
+integers = [1, 2, 3]
+colors = ["红", "黄", "绿"]
+nested_array_of_ints = [[1, 2], [3, 4, 5]]
+nested_mixed_array = [[1, 2], ["a", "b", "c"]]
+string_array = ["所有的", '字符串', """是相同的""", '''类型''']
+# 混合类型的数组
+numbers = [0.1, 0.2, 0.5, 1, 2, 5]
+contributors = [
+    "Foo Bar <foo@example.com>",
+    { name = "Baz Qux", email = "bazqux@example.com", url = "https://example.com/bazqux" }
+]
+# 表
+[table-1]
+key1 = "some string"
+key2 = 123
+[dog."tater.man"]
+type.name = "pug"
+# 内联表
+name = { first = "Tom", last = "Preston-Werner" }
+point = { x = 1, y = 2 }
+animal = { type.name = "pug" }
+# 表数组
+[[products]]
+name = "Hammer"
+sku = 738594937
+[[products]]  # 数组里的空表
+[[products]]
+name = "Nail"
+sku = 284758393
+color = "gray"
+
