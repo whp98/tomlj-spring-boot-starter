@@ -27,10 +27,19 @@ public class TomlPropertySourceLoaderStringNoEscapeMuiltRowTest {
 
     @Test
     public void testPath2() {
-        assertThat(lines, equalTo("原始字符串中的\r\n" +
-                "第一个换行被剔除了。\r\n" +
-                "所有其它空白\r\n" +
-                "都保留了。\r\n"));
+        String osName = System.getProperty("os.name");
+        System.out.println(osName);
+        if (osName.startsWith("Windows")) {
+            assertThat(lines, equalTo("原始字符串中的\r\n" +
+                    "第一个换行被剔除了。\r\n" +
+                    "所有其它空白\r\n" +
+                    "都保留了。\r\n"));
+        } else {
+            assertThat(lines, equalTo("原始字符串中的\n" +
+                    "第一个换行被剔除了。\n" +
+                    "所有其它空白\n" +
+                    "都保留了。\n"));
+        }
     }
 
 

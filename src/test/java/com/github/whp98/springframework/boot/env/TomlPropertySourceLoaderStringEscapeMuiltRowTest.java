@@ -24,8 +24,18 @@ public class TomlPropertySourceLoaderStringEscapeMuiltRowTest {
     public void testStr1() {
         // https://stackoverflow.com/questions/15433188/what-is-the-difference-between-r-n-r-and-n
         // windows next line
-        assertThat(str1, is("Roses are red\r\n" +
-                "Violets are blue"));
+
+        String osName = System.getProperty("os.name");
+        System.out.println(osName);
+        if (osName.startsWith("Windows")) {
+            // windows
+            assertThat(str1, is("Roses are red\r\n" +
+                    "Violets are blue"));
+        } else {
+            // unix or linux
+            assertThat(str1, is("Roses are red\n" +
+                    "Violets are blue"));
+        }
     }
 
     @Test
