@@ -1,11 +1,13 @@
 Spring Boot stater for [tomlj](https://github.com/tomlj/tomlj)
 
+## build
+[![](https://jitpack.io/v/whp98/tomlj-spring-boot-starter.svg)](https://jitpack.io/#whp98/tomlj-spring-boot-starter)
+
 ## tomlj-spring-boot-srtarter 
 
 本项目是 Spring Boot 项目toml的起步依赖使用[tomlj](https://github.com/tomlj/tomlj)作为toml文件的解析库。
 
 ## 当前版本
-starter 版本 v1.1.6
 tomlj 版本 v1.1.0
 
 ## 已知问题
