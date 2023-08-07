@@ -51,6 +51,9 @@ public class TomlPropertySourceLoader implements PropertySourceLoader {
      * @throws IOException if the source cannot be loaded
      */
     public List<PropertySource<?>> load(String name, Resource resource) throws IOException {
+        if (!resource.exists() || !resource.getFile().exists()) {
+            return emptyList();
+        }
         TomlParseResult parseResult = Toml.parse(resource.getFile().toPath());
         parseResult.errors().forEach(error -> System.err.println(error.toString()));
         Map<String, Object> source = parseResult.toMap();
