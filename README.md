@@ -15,7 +15,7 @@ tomlj 版本 v1.1.0
 
 ## 已知问题
 
-本项目编写了较多的测试用例发现有一些不支持的tomlj的语法
+本项目编写了较多的测试用例发现有一些不支持的toml的语法
 
 [配置文件](./src/test/resources/application.toml)
 
