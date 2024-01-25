@@ -1,60 +1,110 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'signing'
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
 
-description 'tomlj-spring-boot-starter'
-group = 'com.github.whp98'
-version = '1.1.0'
+group = 'io.github.whp98'
+version = '1.1.9'
 
 repositories {
     mavenLocal()
-    jcenter()
-    maven {
-        url 'https://jitpack.io'
-    }
+    mavenCentral()
+}
+def getRepositoryUsername() {
+    return hasProperty("sonatypeUsername") ? sonatypeUsername : ""
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-ext.versions = [
-        springBoot: '2.4.13'
-]
+def getRepositoryPassword() {
+    return hasProperty("sonatypePassword") ? sonatypePassword : ""
+}
 
 dependencies {
-    compile 'org.tomlj:tomlj:1.1.0'
-    compileOnly "org.springframework.boot:spring-boot:${versions.springBoot}"
-    testCompile "org.springframework.boot:spring-boot-starter-test:${versions.springBoot}"
+    implementation('org.tomlj:tomlj:1.1.0')
+    compileOnly("org.springframework.boot:spring-boot:2.7.18")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:2.7.18")
+    implementation("com.google.code.findbugs:annotations:3.0.1")
 }
 tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+tasks.withType(Javadoc).configureEach {
     options.encoding = "UTF-8"
 }
 test {
     useJUnitPlatform()
 }
 jar {
-    into('META-INF') {
-        from files('LICENSE')
-    }
-
-    manifest {
-        attributes('Implementation-Title': project.description,
-                'Implementation-Version': project.version,
-                'Implementation-Vendor': 'George Ladutsko')
-    }
-}
-tasks.withType(Javadoc).configureEach {
-    options {
-        encoding "UTF-8"
-        charSet 'UTF-8'
-        links "http://docs.oracle.com/javase/7/docs/api"
-    }
+    enabled = true
+    archiveClassifier = '' //jar包名禁止生成plain
 }
 tasks.register('sourcesJar', Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+tasks.register('javadocJar', Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
+}
+//java {
+//    withJavadocJar()
+//    withSourcesJar()
+//}
+sourceSets.main.resources.srcDirs = ["src/main/java", "src/main/resources"]
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'tomlj-spring-boot-starter'
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                name = 'tomlj-spring-boot-starter'
+                description = 'tomlj-spring-boot-starter'
+                url = 'https://github.com/whp98/tomlj-spring-boot-starter'
+                licenses {
+                    license {
+                        name = 'The MIT License (MIT)'
+                        url = 'https://opensource.org/license/mit/'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'whp98'
+                        name = 'whp98'
+                        email = 'whp98@foxmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/whp98/tomlj-spring-boot-starter.git'
+                    developerConnection = 'scm:git:https://github.com/whp98/tomlj-spring-boot-starter.git'
+                    url = 'https://github.com/whp98/tomlj-spring-boot-starter'
+                }
+            }
+        }
+    }
+    // 定义发布到哪里
+    repositories {
+        maven {
+            name 'maven-center'
+            url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = getRepositoryUsername()
+                password = getRepositoryPassword()
+            }
+        }
+    }
 }
 
-artifacts {
-    sourcesJar
+signing {
+    required { gradle.taskGraph.hasTask("publish") }
+    sign publishing.publications.mavenJava
+}
+test {
+    useJUnitPlatform()
+}
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }

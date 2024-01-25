@@ -1,3 +1,3 @@
 # PropertySource Loaders
 org.springframework.boot.env.PropertySourceLoader=\
-com.github.whp98.springframework.boot.env.TomlPropertySourceLoader
+io.github.whp98.springframework.boot.env.TomlPropertySourceLoader
